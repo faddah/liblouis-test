@@ -1,5 +1,5 @@
-#Liblouis-Test
-###A simple test in the Browser of the LibLouis Braille Translation Lib.
+# Liblouis-Test
+### A simple test in the Browser of the LibLouis Braille Translation Lib.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

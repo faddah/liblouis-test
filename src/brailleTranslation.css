@@ -1,0 +1,22 @@
+@font-face {
+  font-family: SimBraille;
+  src: url("./assets/fonts/SimBraille.ttf");
+}
+
+.braille-trans {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 2.25rem;
+}
+
+input {
+  font-size: 2.1875rem;
+  font-weight: bold;
+}
+
+input#braille-input {
+  /* font-family: SimBraille; */
+}
+
+input#english-input {
+  font-family: Helvetica, Arial, sans-serif;
+}

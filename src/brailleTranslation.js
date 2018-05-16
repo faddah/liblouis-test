@@ -1,10 +1,20 @@
 import React, { Component } from "react";
-import liblouis from "liblouis";
 
 import "./brailleTranslation.css";
 
-const liblouisTableWorker = new Worker("./liblouisTables.js");
-console.log(liblouisTableWorker);
+const liblouis = require("liblouis/easy-api");
+// eslint-disable-next-line import/no-webpack-loader-syntax
+const capi_url = require("file-loader!liblouis-build");
+// eslint-disable-next-line import/no-webpack-loader-syntax
+const easyapi_url = require("file-loader!liblouis/easy-api");
+
+require.context("liblouis-build/tables/", false);
+const table_url = "tables/";
+
+const asyncLiblouis = new liblouis.EasyApiAsync({
+  capi: capi_url,
+  easyapi: easyapi_url
+});
 
 class Braille extends Component {
   state = {
@@ -13,25 +23,45 @@ class Braille extends Component {
   };
 
   _englishTrans = evt => {
-    let engTrans = liblouis.backTranslateString(
-      `${liblouisTableWorker}/unicode.dis,${liblouisTableWorker}/en-us-comp8-ext.utb`,
-      evt.target.value
+    /* const englishTranslate = new Worker(`./liblouisEnglish.js`);
+    englishTranslate.postMessage(evt.target.value); */
+    asyncLiblouis.backTranslateString(
+      `unicode.dis,en-ueb-g2.ctb`,
+      evt.target.value,
+      engTrans => {
+        this.setState({ englishTrans: engTrans });
+      }
     );
-    this.setState({ englishTrans: engTrans });
+    /* englishTranslate.onmessage = e => {
+      let engTrans = e.data;
+    }; */
   };
 
   _brailleTrans = evt => {
-    let brailleTrans = liblouis.translateString(
-      `${liblouisTableWorker}/unicode.dis,${liblouisTableWorker}/en-us-comp8-ext.utb`,
-      evt.target.value
+    /* const brailleTranslate = new Worker(`./liblouisBraille.js`);
+    brailleTranslate.postMessage(evt.target.value); */
+    asyncLiblouis.translateString(
+      `unicode.dis,en-ueb-g2.ctb`,
+      evt.target.value,
+      brlleTrans => {
+        this.setState({ brailleTrans: brlleTrans });
+      }
     );
-    this.setState({ brailleTrans });
+    /*     brailleTranslate.onmessage = e => {
+      let brlleTrans = e.data;
+    }; */
   };
+
+  onComponentDidMount() {
+    asyncLiblouis.enableOnDemandTableLoading(table_url);
+  }
 
   render() {
     return (
       <div className="braille-trans">
-        <p>This Liblouis Version using Easy API is: {liblouis.version()}</p>
+        <p>
+          This Liblouis Version using Easy API is: {asyncLiblouis.version()}
+        </p>
         <p>
           Please input the Braille you would like tranlated:{"   "}
           <input

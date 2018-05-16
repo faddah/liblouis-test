@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "liblouis": "git+https://github.com/liblouis/liblouis-js.git#76595fcac24d38a2d24f0dd3a04c4c6671cdbf76",
-    "liblouis-build": "^3.2.0-rc",
+    "liblouis": "github:liblouis/liblouis-js",
+    "liblouis-build": "github:liblouis/js-build",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-native-braille-six-key-input": "^0.1.0",

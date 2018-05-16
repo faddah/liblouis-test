@@ -14,7 +14,7 @@ input {
 }
 
 input#braille-input {
-  /* font-family: SimBraille; */
+  font-family: SimBraille;
 }
 
 input#english-input {

@@ -4,17 +4,31 @@ import "./brailleTranslation.css";
 
 const liblouis = require("liblouis/easy-api");
 // eslint-disable-next-line import/no-webpack-loader-syntax
-const capi_url = require("file-loader!liblouis-build");
+const capi_url = require("file-loader!liblouis-build/build-embed-tables-ueb.js");
 // eslint-disable-next-line import/no-webpack-loader-syntax
 const easyapi_url = require("file-loader!liblouis/easy-api");
 
-require.context("liblouis-build/tables/", false);
-const table_url = "tables/";
+require.context("liblouis-build/", false);
+const table_url = "/";
 
 const asyncLiblouis = new liblouis.EasyApiAsync({
   capi: capi_url,
   easyapi: easyapi_url
 });
+
+asyncLiblouis.version(version => {
+  console.info(
+    `Running LibLouis version: ${version}, through asynchronous API.`
+  );
+});
+
+asyncLiblouis.translateString(
+  "unicode.dis,en-ueb-g2.ctb",
+  "That is quite fair and very just.",
+  e => {
+    console.log(`That is quite fair and very just.: ${e}`);
+  }
+);
 
 class Braille extends Component {
   state = {
@@ -23,8 +37,6 @@ class Braille extends Component {
   };
 
   _englishTrans = evt => {
-    /* const englishTranslate = new Worker(`./liblouisEnglish.js`);
-    englishTranslate.postMessage(evt.target.value); */
     asyncLiblouis.backTranslateString(
       `unicode.dis,en-ueb-g2.ctb`,
       evt.target.value,
@@ -32,24 +44,16 @@ class Braille extends Component {
         this.setState({ englishTrans: engTrans });
       }
     );
-    /* englishTranslate.onmessage = e => {
-      let engTrans = e.data;
-    }; */
   };
 
   _brailleTrans = evt => {
-    /* const brailleTranslate = new Worker(`./liblouisBraille.js`);
-    brailleTranslate.postMessage(evt.target.value); */
     asyncLiblouis.translateString(
       `unicode.dis,en-ueb-g2.ctb`,
       evt.target.value,
-      brlleTrans => {
-        this.setState({ brailleTrans: brlleTrans });
+      brailleTrans => {
+        this.setState({ brailleTrans });
       }
     );
-    /*     brailleTranslate.onmessage = e => {
-      let brlleTrans = e.data;
-    }; */
   };
 
   onComponentDidMount() {

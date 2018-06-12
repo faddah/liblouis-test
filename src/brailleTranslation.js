@@ -30,6 +30,14 @@ asyncLiblouis.translateString(
   }
 );
 
+asyncLiblouis.backTranslateString(
+  "unicode.dis,en-ueb-g2.ctb",
+  "⠠⠞ ⠊⠎ ⠟ ⠋⠁⠊⠗ ⠯ ⠧ ⠚⠲",
+  e => {
+    console.log(`⠠⠞ ⠊⠎ ⠟ ⠋⠁⠊⠗ ⠯ ⠧ ⠚⠲: ${e}`);
+  }
+);
+
 class Braille extends Component {
   state = {
     englishTrans: "",
@@ -56,7 +64,7 @@ class Braille extends Component {
     );
   };
 
-  onComponentDidMount() {
+  onComponentWillMount() {
     asyncLiblouis.enableOnDemandTableLoading(table_url);
   }
 
